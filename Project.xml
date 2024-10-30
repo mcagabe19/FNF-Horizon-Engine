@@ -43,8 +43,8 @@
 	<haxelib name="haxeui-flixel" />
 	<haxelib name="flxanimate" />
 	<haxelib name="hxdiscord_rpc" />
+	<haxelib name="hxcpp-debug-server" if="cpp debug" />
 	<haxelib name="extension-androidtools" if="android" />
-	<haxelib name="hxcpp-debug-server" if="debug" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -57,15 +57,14 @@
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" />
 
 	<haxedef name="FLX_NO_HEALTH" />
-	<!--<haxedef name="FLX_NO_MOUSE" if="mobile" />
-	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
-	<haxedef name="FLX_NO_TOUCH" if="desktop" />-->
+	<haxedef name="FLX_NO_TOUCH" if="desktop" />
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 	<haxedef name="message.reporting" value="pretty" />
 
 	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxSprite', '@:build(horizon.macros.ModificationMacros.FlxSprite())', false)" />
+	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxBasic', '@:build(horizon.macros.ModificationMacros.FlxBasic())', false)" />
 	<haxeflag name="--macro" value="addGlobalMetadata('haxe.ui.locale.LocaleManager', '@:build(horizon.macros.ModificationMacros.LocaleManager())', false)" />
 	<haxeflag name="--macro" value="addGlobalMetadata('flixel.system.frontEnds.LogFrontEnd', '@:build(horizon.macros.ModificationMacros.LogFrontEnd())', false)" />
 	<postbuild haxe="source.Postbuild" />
