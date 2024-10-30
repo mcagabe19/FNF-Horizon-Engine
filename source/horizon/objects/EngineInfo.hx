@@ -4,6 +4,9 @@ import lime.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import sys.io.Process;
+#if android
+import android.os.Build;
+#end
 
 // Based on PsychEngine's FPSCounter.hx
 class EngineInfo extends TextField
@@ -21,9 +24,10 @@ class EngineInfo extends TextField
 		super();
 
 		// https://askubuntu.com/a/988612
-		var cpuProc = new Process(#if windows 'wmic cpu get name' #elseif linux 'lscpu | grep \'Model name\' | cut -f 2 -d \":\" | awk \'{$1=$1}1\'' #end);
+		var cpuProc = new Process(#if windows 'wmic cpu get name' #elseif (linux || android) 'lscpu | grep \'Model name\' | cut -f 2 -d \":\" | awk \'{$1=$1}1\'' #elseif (mac || ios) 'sysctl -a | grep brand_string | awk -F ": " \'{print $2}\'' #end);
 
-		var cpu:String = 'N/A';
+		// (lily spawns for adrod code)
+		var cpu:String = #if android (AndroidVersion.SDK_INT >= AndroidVersionCode.S) ? Build.SOC_MODEL : Build.HARDWARE #else 'N/A' #end;
 
 		if (cpuProc.exitCode() == 0)
 		{
@@ -45,7 +49,8 @@ class EngineInfo extends TextField
 		libText += 'HaxeUI-Core:   ${LibraryMacro.getLibVersion('haxeui-core')}\n';
 		libText += 'HaxeUI-Flixel: ${LibraryMacro.getLibVersion('haxeui-flixel')}\n';
 
-		x = y = 5;
+		x = #if mobile FlxG.game.x + #end 5;
+		y = #if mobile FlxG.game.y + #end 5;
 
 		curFPS = FlxG.updateFramerate;
 		selectable = mouseEnabled = false;
@@ -83,4 +88,12 @@ class EngineInfo extends TextField
 
 		text = 'FPS: ${curFPS}\nMemory: ${Util.formatBytes(cast(curMemory, UInt))} ${Constants.debugDisplay ? libText : ''}';
 	}
+
+	#if mobile
+	public inline function setScale(?scale:Float){
+		if(scale == null)
+			scale = Math.min(FlxG.stage.window.width / FlxG.width, FlxG.stage.window.height / FlxG.height);
+		scaleX = scaleY = #if android (scale > 1 ? scale : 1) #else (scale < 1 ? scale : 1) #end;
+	}
+	#end
 }

@@ -35,6 +35,18 @@ import horizon.util.*;
 import sys.FileSystem;
 import sys.io.File;
 import tjson.TJSON;
+
+#if android
+import android.Permissions as AndroidPermissions;
+import android.Settings as AndroidSettings;
+import android.Tools as AndroidTools;
+import android.content.Context as AndroidContext;
+import android.os.BatteryManager as AndroidBatteryManager;
+import android.os.Build.VERSION as AndroidVersion;
+import android.os.Build.VERSION_CODES as AndroidVersionCode;
+import android.os.Environment as AndroidEnvironment;
+import android.widget.Toast as AndroidToast;
+#end
 #end
 
 using StringTools;
