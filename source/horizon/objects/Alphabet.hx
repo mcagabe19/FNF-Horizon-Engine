@@ -14,6 +14,7 @@ class Alphabet extends FlxSpriteGroup
 	private var maxWidth:Float = 0;
 	private var maxHeight:Float = 0;
 
+	// Static group used for recycling between alphabets, cleared in preStateCreate
 	private static var alphabetGroup:FlxSpriteGroup = new FlxSpriteGroup();
 	private static final letterRegex = ~/^[a-zA-Z]+$/;
 
@@ -106,7 +107,7 @@ class Alphabet extends FlxSpriteGroup
 
 				char.x = letterTracker;
 				char.y -= char.height;
-				// TODO find reason i added + (2 * textScale);
+
 				letterTracker += char.width + (2 * textScale);
 				add(char);
 				lines[i].push(char);
