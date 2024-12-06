@@ -18,7 +18,7 @@ class ModificationMacros
 			name: "zIndex",
 			pos: Context.currentPos(),
 			access: [APublic],
-			kind: FVar(macro :Int, macro $v{0}),
+			kind: FVar(macro :Int, macro idEnumerator),
 		});
 
 		return fields;
@@ -86,84 +86,6 @@ class ModificationMacros
 							applyLocale(_language);
 						}
 						#end
-					}
-				});
-			default:
-		}
-
-		return fields;
-		#end
-	}
-
-	// TODO change to $b{expr {}, f.expr}
-	static function LogFrontEnd()
-	{
-		#if macro
-		var fields = Context.getBuildFields();
-
-		var add:Field = [for (field in fields) if (field.name == 'add') field][0];
-		switch (add.kind)
-		{
-			case FFun(f):
-				add.kind = FFun({
-					args: f.args,
-					params: f.params,
-					ret: f.ret,
-					expr: macro
-					{
-						horizon.util.Log.print(data, 'FLIXEL WARN', 214, {
-							methodName: 'add',
-							lineNumber: 22,
-							fileName: 'FlxG.Log/LogFrontEnd.hx',
-							className: 'LogFrontEnd'
-						});
-						advanced(data, LogStyle.NORMAL);
-					}
-				});
-			default:
-		}
-
-		var warn:Field = [for (field in fields) if (field.name == 'warn') field][0];
-		switch (warn.kind)
-		{
-			case FFun(f):
-				warn.kind = FFun({
-					args: f.args,
-					params: f.params,
-					ret: f.ret,
-					expr: macro
-					{
-						horizon.states.ErrorState.errs.push('FLIXEL WARN: $data');
-						horizon.util.Log.print(data, 'FLIXEL WARN', 214, {
-							methodName: 'warn',
-							lineNumber: 28,
-							fileName: 'FlxG.Log/LogFrontEnd.hx',
-							className: 'LogFrontEnd'
-						});
-						advanced(data, LogStyle.WARNING, true);
-					}
-				});
-			default:
-		}
-
-		var error:Field = [for (field in fields) if (field.name == 'error') field][0];
-		switch (error.kind)
-		{
-			case FFun(f):
-				error.kind = FFun({
-					args: f.args,
-					params: f.params,
-					ret: f.ret,
-					expr: macro
-					{
-						horizon.states.ErrorState.errs.push('FLIXEL ERROR: $data');
-						horizon.util.Log.print(data, 'FLIXEL ERROR', 196, {
-							methodName: 'error',
-							lineNumber: 33,
-							fileName: 'FlxG.Log/LogFrontEnd.hx',
-							className: 'LogFrontEnd'
-						});
-						advanced(data, LogStyle.ERROR, true);
 					}
 				});
 			default:

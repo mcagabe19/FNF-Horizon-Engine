@@ -16,10 +16,15 @@ class FlxAnimSprite extends FlxSprite
 		frames = atlas;
 
 		for (data in json.animData)
+		{
 			if (data.indices != null)
 				animation.addByIndices(data.name, data.prefix, data.indices, '', data.fps ?? 24, data.looped ?? false);
 			else
 				animation.addByPrefix(data.name, data.prefix, data.fps ?? 24, data.looped ?? false);
+
+			if (data.offsets != null)
+				offsets.set(data.name, data.offsets);
+		}
 
 		antialiasing = json.antialiasing ?? Settings.antialiasing;
 		flipX = json.flipX ?? false;
@@ -30,6 +35,7 @@ class FlxAnimSprite extends FlxSprite
 		centerOffsets();
 	}
 
+	@:inheritDoc(flixel.animation.FlxAnimationController.play)
 	public function playAnim(animName:String, ?force:Bool, ?reversed:Bool, ?frame:Int)
 	{
 		animation.play(animName, force, reversed, frame);

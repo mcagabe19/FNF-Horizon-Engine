@@ -24,9 +24,8 @@ class Conductor extends FlxBasic
 	static var stepLength:Float = -1;
 	static var measureLength:Float = -1;
 
-	static var offset:Float = 0;
 	static var time:Float = 0;
-	static var lerpedTime:Float = 0;
+	static var offset:Float = 0;
 	static var song(default, set):FlxSound;
 	static var timeSignature(default, set):TimeSignature = {numerator: 4, denominator: 4}
 
@@ -59,14 +58,16 @@ class Conductor extends FlxBasic
 	{
 		if (song != null)
 		{
-			if (song.time == lastTime)
-				Conductor.time += elapsed;
-			else
+			if (song.playing)
 			{
-				time = song.time + offset;
-				lastTime = song.time;
+				if (song.time == lastTime)
+					time += elapsed * 1000;
+				else
+				{
+					time = song.time + offset;
+					lastTime = song.time;
+				}
 			}
-			lerpedTime = FlxMath.lerp(lerpedTime, time, FlxMath.bound(elapsed * 20, 0, 1));
 		}
 		else if (FlxG.sound.music != null && switchToMusic)
 		{
@@ -112,7 +113,7 @@ class Conductor extends FlxBasic
 	@:noCompletion static function set_song(val:FlxSound):FlxSound
 	{
 		if (val != null)
-			val.onComplete = () -> Conductor.reset();
+			val.onComplete = Conductor.reset;
 
 		return song = val;
 	}
@@ -133,7 +134,7 @@ class Conductor extends FlxBasic
 	@:noCompletion static inline function recalculateLengths(val:Float):Void
 	{
 		beatLength = 60 / val * 1000 * (4 / timeSignature.denominator);
-		stepLength = beatLength / 4;
+		stepLength = beatLength * .25;
 		measureLength = beatLength * timeSignature.numerator;
 	}
 }

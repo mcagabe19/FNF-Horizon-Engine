@@ -6,12 +6,15 @@
 
 ---
 
+> [!NOTE]
+> Horizon Engine is very incomplete, do not use it for mods.
+
 ## Compilation Instructions
 
 1. Install Haxe 4.3.6 (and install MSVC if on Windows)
 
 > [!NOTE]
-> You may need to install extra packages on linux to compile lime, see [here](https://github.com/openfl/lime)
+> You may need to install extra packages on Linux to compile lime, see [here](https://github.com/openfl/lime)
 
 2. Run the following commands
 
@@ -37,4 +40,4 @@ haxelib run lime rebuild cpp -release
 - crowplexus and nebulazorua - Alt+Enter cancel + F11 fullscreen
 - [superpowers04](https://github.com/superpowers04) - Safer FlxGame
 - [CoreCat](https://corecathx.github.io/) - Utility functions, Device Info code, Windows.hx code
-- [Sword352/FnF-Eternal](https://github.com/Sword352/FnF-Eternal) - Tiled Sprite and Sustains
+- [Sword352/FnF-Eternal](https://github.com/Sword352/FnF-Eternal) - Tiled Sprite

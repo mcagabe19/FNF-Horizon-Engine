@@ -1,5 +1,7 @@
 package horizon.states;
 
+import flixel.addons.display.FlxBackdrop;
+import flixel.effects.FlxFlicker;
 import lime.app.Application;
 
 class MainMenuState extends MusicMenuState
@@ -21,7 +23,7 @@ class MainMenuState extends MusicMenuState
 		add(flashBG = Create.backdrop(Path.image('menuBGMagenta'), [menuCam], 1.1));
 		flashBG.visible = false;
 
-		for (val in Mods.all)
+		for (_ in Mods.all)
 			modCount++;
 
 		for (name in ['storymode', 'freeplay', 'mods', 'credits', 'merch', 'options'])
@@ -91,7 +93,7 @@ class MainMenuState extends MusicMenuState
 		transitioningOut = false;
 		prevSelected = curSelected;
 		if (curSelected == (4 - (modCount == 0 ? 1 : 0)))
-			Util.openURL('https://needlejuicerecords.com/pages/friday-night-funkin');
+			FlxG.openURL('https://needlejuicerecords.com/pages/friday-night-funkin');
 		else
 		{
 			if (Settings.flashingLights)
@@ -110,7 +112,7 @@ class MainMenuState extends MusicMenuState
 			if (Settings.flashingLights)
 				FlxFlicker.flicker(menuOptions[curSelected], 1.3, .06, false, false, flicker -> out());
 			else
-				FlxTimer.wait(1.3, () -> out());
+				FlxTimer.wait(1.3, out);
 			for (i in 0...menuOptions.length)
 				if (i != curSelected)
 					FlxTween.tween(menuOptions[i], {alpha: 0}, .3, {

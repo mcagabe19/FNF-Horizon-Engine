@@ -6,6 +6,7 @@ import haxe.Http;
 import haxe.ui.Toolkit;
 import haxe.ui.backend.flixel.CursorHelper;
 import horizon.util.ALConfig;
+import lime.app.Application;
 
 class InitState extends MusicState
 {
@@ -36,7 +37,12 @@ class InitState extends MusicState
 		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, 0xFF000000, .25, new FlxPoint(-1));
 		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, 0xFF000000, .25, new FlxPoint(1));
 
-		var request = new Http('https://raw.githubusercontent.com/CobaltBar/FNF-Horizon-Engine/main/.build');
+		Alphabet.init();
+
+		FlxG.plugins.addPlugin(new Conductor());
+		super.create();
+
+		var request = new Http('https://raw.githubusercontent.com/CCobaltDev/FNF-Horizon-Engine/main/.build');
 		request.onData = data ->
 		{
 			onlineVer = data.trim();
@@ -51,16 +57,6 @@ class InitState extends MusicState
 		request.onError = msg -> Log.error('Update Check Error: $msg');
 		request.request();
 
-		FlxG.signals.preStateCreate.add(state -> @:privateAccess
-		{
-			for (member in Alphabet.alphabetGroup.members)
-				member.destroy();
-			Alphabet.alphabetGroup.clear();
-		});
-
-		FlxG.plugins.addPlugin(new Conductor());
-
-		super.create();
 		MusicState.switchState(new TitleState(), true, true);
 	}
 }

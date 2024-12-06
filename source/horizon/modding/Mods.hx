@@ -1,5 +1,7 @@
 package horizon.modding;
 
+import haxe.ds.ArraySort;
+
 class Mods
 {
 	public static var all:Array<String> = [];
@@ -34,8 +36,9 @@ class Mods
 				{
 					all.push(folders[i]);
 
-					if (!Settings.savedMods.exists(folders[i]))
-						continue;
+					if (Settings.savedMods.exists(folders[i]))
+						if (!Settings.savedMods[folders[i]].enabled)
+							continue;
 
 					enabled.push(parseMod(modPath, folders[i], i));
 				}

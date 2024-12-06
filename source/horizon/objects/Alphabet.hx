@@ -18,6 +18,16 @@ class Alphabet extends FlxSpriteGroup
 	private static var alphabetGroup:FlxSpriteGroup = new FlxSpriteGroup();
 	private static final letterRegex = ~/^[a-zA-Z]+$/;
 
+	static function init():Void
+	{
+		FlxG.signals.preStateCreate.add(state -> @:privateAccess
+		{
+			for (member in Alphabet.alphabetGroup.members)
+				member.destroy();
+			Alphabet.alphabetGroup.clear();
+		});
+	}
+
 	function new(x:Float, y:Float, text:String, bold:Bool, align:FlxTextAlign, scale:Float = 1)
 	{
 		super(x, y);
@@ -76,7 +86,7 @@ class Alphabet extends FlxSpriteGroup
 					animName += ' normal';
 				animName = animName.toLowerCase();
 
-				var char = alphabetGroup.recycle(FlxSprite, () -> Create.atlas(0, 0, Path.atlas('alphabet')));
+				var char = alphabetGroup.recycle(FlxSprite, Create.atlas.bind(0, 0, Path.atlas('alphabet')));
 				if (char.animation.exists('idle'))
 					char.animation.remove('idle');
 				char.animation.addByPrefix('idle', animName, 24);
